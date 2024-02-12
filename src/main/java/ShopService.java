@@ -1,10 +1,7 @@
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class ShopService {
@@ -37,5 +34,9 @@ public class ShopService {
 
     public Order updateOrder(String orderId, OrderStatus orderStatus) {
         return orderRepo.updateOrder(orderId, orderStatus);
+    }
+
+    public Map<OrderStatus, Order> getOldestOrderPerStatus() {
+        return orderRepo.getOldestOrderPerStatus();
     }
 }

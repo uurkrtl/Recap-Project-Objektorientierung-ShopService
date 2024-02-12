@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderListRepo implements OrderRepo{
     private List<Order> orders = new ArrayList<>();
@@ -37,5 +39,16 @@ public class OrderListRepo implements OrderRepo{
         this.removeOrder(id);
         this.addOrder(updatedOrder);
         return updatedOrder;
+    }
+
+    @Override
+    public Map<OrderStatus, Order> getOldestOrderPerStatus() {
+        Map<OrderStatus,Order> result = new HashMap<>();
+        for (Order order : orders) {
+            if (!result.containsKey(order.orderStatus()) || result.get(order.orderStatus()).orderTimestamp().isAfter(order.orderTimestamp())) {
+                result.put(order.orderStatus(), order);
+            }
+        }
+        return result;
     }
 }

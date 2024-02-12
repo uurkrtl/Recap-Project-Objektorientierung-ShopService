@@ -79,4 +79,35 @@ class ShopServiceTest {
         Order expected = new Order(order.id(), order.products(), OrderStatus.COMPLETED, order.orderTimestamp());
         assertEquals(expected, actual);
     }
+
+    /*
+    @Test
+    void getOldestOrderPerStatusTest() {
+        //GIVEN
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
+        List<String> productsIds = List.of("1");
+        Order order1 = shopService.addOrder(productsIds);
+        Order order2 = shopService.addOrder(productsIds);
+        Order order3 = shopService.addOrder(productsIds);
+        Order order4 = shopService.addOrder(productsIds);
+        Order order5 = shopService.addOrder(productsIds);
+        Order order6 = shopService.addOrder(productsIds);
+        Order order7 = shopService.addOrder(productsIds);
+
+        shopService.updateOrder(order1.id(), OrderStatus.COMPLETED);
+        shopService.updateOrder(order3.id(), OrderStatus.IN_DELIVERY);
+        shopService.updateOrder(order4.id(), OrderStatus.COMPLETED);
+        shopService.updateOrder(order5.id(), OrderStatus.IN_DELIVERY);
+        shopService.updateOrder(order6.id(), OrderStatus.COMPLETED);
+        shopService.updateOrder(order7.id(), OrderStatus.COMPLETED);
+
+        //WHEN
+        List<Order> actual = new ArrayList<>(shopService.getOldestOrderPerStatus().values());
+
+        //THEN
+        List<Order> expected = List.of(order2, shopService.updateOrder(order3.id(), OrderStatus.IN_DELIVERY), shopService.updateOrder(order1.id(), OrderStatus.COMPLETED));
+        assertEquals(expected, actual);
+    }
+
+     */
 }

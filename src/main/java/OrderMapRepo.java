@@ -31,4 +31,15 @@ public class OrderMapRepo implements OrderRepo{
     public Order updateOrder(String id, OrderStatus orderStatus) {
         return this.addOrder(this.getOrderById(id).withOrderStatus(orderStatus));
     }
+
+    @Override
+    public Map<OrderStatus, Order> getOldestOrderPerStatus() {
+        Map<OrderStatus,Order> result = new HashMap<>();
+        for (Order order : orders.values()) {
+            if (!result.containsKey(order.orderStatus()) || result.get(order.orderStatus()).orderTimestamp().isAfter(order.orderTimestamp())) {
+                result.put(order.orderStatus(), order);
+            }
+        }
+        return result;
+    }
 }
