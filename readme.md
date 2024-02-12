@@ -56,3 +56,51 @@ Define three concrete orders and add them all to the ShopService.
 ## Bonus: ID Generation
 
 Create an  `IdService`  for generating an ID, which returns a new UUID in the  `generateId`  method (using  `java.util.UUID`). Create a concrete implementation of the  `IdService`  in the main method and pass it to the ShopService constructor.
+
+## Bonus: Pending Orders
+
+Write a method `getOldestOrderPerStatus` that returns a map with the oldest Order object per status.
+
+## Bonus: Transaction File
+
+Have the main method read a file `transactions.txt` in the following format:
+```
+addOrder A 1 2 3
+addOrder B 4 1
+setStatus A COMPLETED
+printOrders
+```
+
+This file should contain a list of command lines that the ShopService should execute.
+
+The following command lines should be supported:
+
+---
+
+`addOrder`
+
+Adds a new order. The order should contain the given product IDs. The order should have the status `PROCESSING`.
+
+`addOrder <alias for order within file> <productId> [<productId> ...]`
+
+```
+Save the OrderID returned by the ShopService in a data structure (with the specified, freely selectable alias) so that you can later change the status of the order.
+
+---
+
+`setStatus`
+
+Sets the status of an order.
+
+`setStatus <alias for order within file> <status>`
+
+---
+
+`printOrders`
+
+Prints all orders.
+```
+
+## Bonus: Quantity and Stock Levels
+
+Add a quantity to the products. When a product is ordered, the quantity of the product is decreased. If a product is out of stock, it cannot be ordered anymore. Allow decimal numbers as well. Also, extend the command processing with `transactions.txt` accordingly.

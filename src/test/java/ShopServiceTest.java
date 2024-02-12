@@ -105,7 +105,7 @@ class ShopServiceTest {
         List<Order> actual = new ArrayList<>(shopService.getOldestOrderPerStatus().values());
 
         //THEN
-        List<Order> expected = List.of(order2, shopService.updateOrder(order3.id(), OrderStatus.IN_DELIVERY), shopService.updateOrder(order1.id(), OrderStatus.COMPLETED));
+        List<Order> expected = List.of(order1, order3, order4));
         assertEquals(expected, actual);
     }
 
