@@ -7,7 +7,7 @@ public class ProductRepo {
 
     public ProductRepo() {
         products = new ArrayList<>();
-        products.add(new Product("1", "Apfel"));
+        products.add(new Product("1", "Apfel", 10));
     }
 
     public List<Product> getProducts() {
@@ -34,6 +34,17 @@ public class ProductRepo {
                products.remove(product);
                return;
            }
+        }
+    }
+
+    public void updateProductStock(String id, double stock) {
+        Product updatedProduct;
+        for (Product product : products) {
+            if (product.id().equals(id)) {
+                updatedProduct = product.withStock(stock);
+                products.set(products.indexOf(product), updatedProduct);
+                return;
+            }
         }
     }
 }

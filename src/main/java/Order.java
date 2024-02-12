@@ -1,11 +1,12 @@
 import lombok.With;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public record Order(
         String id,
-        List<java.util.Optional<Product>> products,
+        Map<Optional<Product>,Double> products,
         @With
         OrderStatus orderStatus,
         Instant orderTimestamp

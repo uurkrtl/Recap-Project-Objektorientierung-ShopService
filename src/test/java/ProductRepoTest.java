@@ -1,10 +1,12 @@
+import org.junit.jupiter.api.Test;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductRepoTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getProducts() {
         //GIVEN
         ProductRepo repo = new ProductRepo();
@@ -14,11 +16,11 @@ class ProductRepoTest {
 
         //THEN
         List<Product> expected = new ArrayList<>();
-        expected.add(new Product("1", "Apfel"));
+        expected.add(new Product("1", "Apfel", 10.0));
         assertEquals(actual, expected);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getProductById() {
         //GIVEN
         ProductRepo repo = new ProductRepo();
@@ -27,26 +29,26 @@ class ProductRepoTest {
         Optional<Product> actual = repo.getProductById("1");
 
         //THEN
-        Product expected = new Product("1", "Apfel");
-        assertEquals(actual, expected);
+        Product expected = new Product("1", "Apfel", 10.0);
+        assertEquals(actual.get(), expected);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void addProduct() {
         //GIVEN
         ProductRepo repo = new ProductRepo();
-        Product newProduct = new Product("2", "Banane");
+        Product newProduct = new Product("2", "Banane", 10.0);
 
         //WHEN
         Product actual = repo.addProduct(newProduct);
 
         //THEN
-        Product expected = new Product("2", "Banane");
-        assertEquals(actual, expected);
-        assertEquals(repo.getProductById("2"), expected);
+        Optional<Product> expected = Optional.of(new Product("2", "Banane", 10.0)) ;
+        assertEquals(actual, expected.get());
+        assertEquals(repo.getProductById("2").get(), expected.get());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void removeProduct() {
         //GIVEN
         ProductRepo repo = new ProductRepo();
@@ -55,6 +57,6 @@ class ProductRepoTest {
         repo.removeProduct("1");
 
         //THEN
-        assertNull(repo.getProductById("1"));
+        assertTrue(repo.getProductById("1").isEmpty());
     }
 }

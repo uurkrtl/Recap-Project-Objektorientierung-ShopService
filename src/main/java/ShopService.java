@@ -9,18 +9,22 @@ public class ShopService {
     private final OrderRepo orderRepo;
     private final IdService idService;
 
-    public Order addOrder(List<String> productIds) {
-        List<Optional<Product>> products = new ArrayList<>();
-        for (String productId : productIds) {
+    public Order addOrder(Map<String,Double> productIds) {
+        Map<Optional<Product>,Double> products = new HashMap<>();
+        for (String productId : productIds.keySet()) {
             Optional<Product> productToOrder = productRepo.getProductById(productId);
             try {
                 if (productToOrder.isEmpty()) {
                     throw new Exception("Product mit der Id: " + productId + " konnte nicht bestellt werden!");
+                } else if (productToOrder.get().stock() < productIds.get(productId)){
+                    throw new Exception("Nicht genug Vorrat für das Produkt mit der Id: " + productId);
+                } else {
+                    productRepo.updateProductStock(productId, productToOrder.get().stock() - productIds.get(productId));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            products.add(productToOrder);
+            products.put(productToOrder, productIds.get(productId));
         }
 
         Order newOrder = new Order(idService.generateId(), products, OrderStatus.PROCESSING, Instant.now());

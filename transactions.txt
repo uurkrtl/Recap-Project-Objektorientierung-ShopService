@@ -1,0 +1,5 @@
+//addOrder Format: <alias_for_order> <item_id>:<quantity> <item_id>:<quantity> ...
+addOrder A 1:3 2:3 3:3
+addOrder B 4:2 1:1
+setStatus A COMPLETED
+printOrders

@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,13 +14,12 @@ class ShopServiceTest {
     void addOrderTest() {
         //GIVEN
         ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
-        List<String> productsIds = List.of("1");
 
         //WHEN
-        Order actual = shopService.addOrder(productsIds);
+        Order actual = shopService.addOrder(Map.of("1", 1.0));
 
         //THEN
-        Order expected = new Order("-1", List.of(Optional.of(new Product("1", "Apfel"))), OrderStatus.PROCESSING, Instant.now());
+        Order expected = new Order(actual.id(), Map.of(Optional.of(new Product("1", "Apfel", 10)), 1.0), OrderStatus.PROCESSING, Instant.now());
         assertEquals(expected.products(), actual.products());
         assertNotNull(expected.id());
     }
@@ -28,10 +28,9 @@ class ShopServiceTest {
     void addOrderTest_whenInvalidProductId_thrownException() {
         //GIVEN
         ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
-        List<String> productsIds = List.of("1", "2");
 
         //WHEN
-        Order actual = shopService.addOrder(productsIds);
+        Order actual = shopService.addOrder(Map.of("2", 1.0));
 
         //THEN
         assertThrows(Exception.class, () -> {
@@ -43,8 +42,8 @@ class ShopServiceTest {
     void getOrderByIdTest() {
         //GIVEN
         ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
-        List<String> productsIds = List.of("1");
-        Order expected = shopService.addOrder(productsIds);
+        //List<String> productsIds = List.of("1");
+        Order expected = shopService.addOrder(Map.of("1", 1.0));
 
         //WHEN
         Order actual = shopService.getOrderById(expected.id());
@@ -69,8 +68,8 @@ class ShopServiceTest {
     void updateOrderTest() {
         //GIVEN
         ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
-        List<String> productsIds = List.of("1");
-        Order order = shopService.addOrder(productsIds);
+        //List<String> productsIds = List.of("1");
+        Order order = shopService.addOrder(Map.of("1", 1.0));
 
         //WHEN
         Order actual = shopService.updateOrder(order.id(), OrderStatus.COMPLETED);
@@ -80,34 +79,34 @@ class ShopServiceTest {
         assertEquals(expected, actual);
     }
 
-    /*
+
     @Test
     void getOldestOrderPerStatusTest() {
         //GIVEN
         ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
-        List<String> productsIds = List.of("1");
-        Order order1 = shopService.addOrder(productsIds);
-        Order order2 = shopService.addOrder(productsIds);
-        Order order3 = shopService.addOrder(productsIds);
-        Order order4 = shopService.addOrder(productsIds);
-        Order order5 = shopService.addOrder(productsIds);
-        Order order6 = shopService.addOrder(productsIds);
-        Order order7 = shopService.addOrder(productsIds);
+        //List<String> productsIds = List.of("1");
+        Order order1 = shopService.addOrder(Map.of("1", 1.0));
+        Order order2 = shopService.addOrder(Map.of("1", 1.0));
+        Order order3 = shopService.addOrder(Map.of("1", 1.0));
+        Order order4 = shopService.addOrder(Map.of("1", 1.0));
+        Order order5 = shopService.addOrder(Map.of("1", 1.0));
+        Order order6 = shopService.addOrder(Map.of("1", 1.0));
+        Order order7 = shopService.addOrder(Map.of("1", 1.0));
 
         shopService.updateOrder(order1.id(), OrderStatus.COMPLETED);
         shopService.updateOrder(order3.id(), OrderStatus.IN_DELIVERY);
         shopService.updateOrder(order4.id(), OrderStatus.COMPLETED);
         shopService.updateOrder(order5.id(), OrderStatus.IN_DELIVERY);
-        shopService.updateOrder(order6.id(), OrderStatus.COMPLETED);
+        shopService.updateOrder(order6.id(), OrderStatus.PROCESSING);
         shopService.updateOrder(order7.id(), OrderStatus.COMPLETED);
 
         //WHEN
         List<Order> actual = new ArrayList<>(shopService.getOldestOrderPerStatus().values());
 
         //THEN
-        List<Order> expected = List.of(order2, shopService.updateOrder(order3.id(), OrderStatus.IN_DELIVERY), shopService.updateOrder(order1.id(), OrderStatus.COMPLETED));
+        List<Order> expected = List.of(order1.withOrderStatus(OrderStatus.COMPLETED), order2.withOrderStatus(OrderStatus.PROCESSING), order3.withOrderStatus(OrderStatus.IN_DELIVERY));
         assertEquals(expected, actual);
     }
 
-     */
+
 }
