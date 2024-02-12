@@ -44,3 +44,15 @@ Add an 'updateOrder' method in the ShopService that updates the Order based on a
 Extend the Order object with a field that stores the order timestamp. In the 'addOrder' method, fill this field with the current timestamp.
 
 This timestamp should be able to be used as evidence in court if customers claim that they did not place the order. Consider which data type is best suited for this, even if customers order from abroad.
+
+## Bonus: Setting in Main Repo
+
+Create a Main class with a main method. In this method, create an instance of the ShopService.
+
+The concrete instances for OrderRepo and ShopRepo should also be created here in the main method. Pass them to the ShopService constructor. Use the  `@RequiredArgsConstructor`  annotation in the ShopService to generate a corresponding constructor.
+
+Define three concrete orders and add them all to the ShopService.
+
+## Bonus: ID Generation
+
+Create an  `IdService`  for generating an ID, which returns a new UUID in the  `generateId`  method (using  `java.util.UUID`). Create a concrete implementation of the  `IdService`  in the main method and pass it to the ShopService constructor.
