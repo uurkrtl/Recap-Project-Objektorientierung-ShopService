@@ -30,4 +30,12 @@ public class OrderListRepo implements OrderRepo{
             }
         }
     }
+
+    @Override
+    public Order updateOrder(String id, OrderStatus orderStatus) {
+        Order updatedOrder = this.getOrderById(id).withOrderStatus(orderStatus);
+        this.removeOrder(id);
+        this.addOrder(updatedOrder);
+        return updatedOrder;
+    }
 }

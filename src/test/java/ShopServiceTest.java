@@ -63,4 +63,19 @@ class ShopServiceTest {
         //THEN
         assertNull(actual);
     }
+
+    @Test
+    void updateOrderTest() {
+        //GIVEN
+        ShopService shopService = new ShopService();
+        List<String> productsIds = List.of("1");
+        Order order = shopService.addOrder(productsIds);
+
+        //WHEN
+        Order actual = shopService.updateOrder(order.id(), OrderStatus.COMPLETED);
+
+        //THEN
+        Order expected = new Order(order.id(), order.products(), OrderStatus.COMPLETED);
+        assertEquals(expected, actual);
+    }
 }

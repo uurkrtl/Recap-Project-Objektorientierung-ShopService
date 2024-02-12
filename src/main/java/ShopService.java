@@ -37,4 +37,8 @@ public class ShopService {
     public Order getOrderById(String orderId) {
         return orderRepo.getOrderById(orderId);
     }
+
+    public Order updateOrder(String orderId, OrderStatus orderStatus) {
+        return orderRepo.updateOrder(orderId, orderStatus);
+    }
 }
