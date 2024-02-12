@@ -12,7 +12,7 @@ class ShopServiceTest {
     @Test
     void addOrderTest() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo());
         List<String> productsIds = List.of("1");
 
         //WHEN
@@ -27,7 +27,7 @@ class ShopServiceTest {
     @Test
     void addOrderTest_whenInvalidProductId_thrownException() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo());
         List<String> productsIds = List.of("1", "2");
 
         //WHEN
@@ -42,7 +42,7 @@ class ShopServiceTest {
     @Test
     void getOrderByIdTest() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo());
         List<String> productsIds = List.of("1");
         Order expected = shopService.addOrder(productsIds);
 
@@ -56,7 +56,7 @@ class ShopServiceTest {
     @Test
     void getOrderByIdTest_whenInvalidOrderId_expectNull() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo());
 
         //WHEN
         Order actual = shopService.getOrderById("invalidId");
@@ -68,7 +68,7 @@ class ShopServiceTest {
     @Test
     void updateOrderTest() {
         //GIVEN
-        ShopService shopService = new ShopService();
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo());
         List<String> productsIds = List.of("1");
         Order order = shopService.addOrder(productsIds);
 
