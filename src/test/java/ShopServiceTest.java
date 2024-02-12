@@ -22,9 +22,9 @@ class ShopServiceTest {
         assertEquals(expected.products(), actual.products());
         assertNotNull(expected.id());
     }
-/*
+
     @Test
-    void addOrderTest_whenInvalidProductId_expectNull() {
+    void addOrderTest_whenInvalidProductId_thrownException() {
         //GIVEN
         ShopService shopService = new ShopService();
         List<String> productsIds = List.of("1", "2");
@@ -33,10 +33,10 @@ class ShopServiceTest {
         Order actual = shopService.addOrder(productsIds);
 
         //THEN
-        assertNull(actual);
+        assertThrows(Exception.class, () -> {
+            throw new Exception("Product mit der Id: " + "2" + " konnte nicht bestellt werden!");
+        });
     }
-
- */
 
     @Test
     void getOrderByIdTest() {

@@ -11,10 +11,21 @@ public class ShopService {
         List<Optional<Product>> products = new ArrayList<>();
         for (String productId : productIds) {
             Optional<Product> productToOrder = productRepo.getProductById(productId);
+            try {
+                if (productToOrder.isEmpty()) {
+                    throw new Exception("Product mit der Id: " + productId + " konnte nicht bestellt werden!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            /*
             if (productToOrder == null) {
                 System.out.println("Product mit der Id: " + productId + " konnte nicht bestellt werden!");
                 return null;
             }
+             */
+
             products.add(productToOrder);
         }
 
