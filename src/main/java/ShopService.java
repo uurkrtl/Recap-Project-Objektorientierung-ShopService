@@ -13,17 +13,16 @@ public class ShopService {
         Map<Optional<Product>,Double> products = new HashMap<>();
         for (String productId : productIds.keySet()) {
             Optional<Product> productToOrder = productRepo.getProductById(productId);
-            try {
-                if (productToOrder.isEmpty()) {
-                    throw new Exception("Product mit der Id: " + productId + " konnte nicht bestellt werden!");
-                } else if (productToOrder.get().stock() < productIds.get(productId)){
-                    throw new Exception("Nicht genug Vorrat für das Produkt mit der Id: " + productId);
-                } else {
-                    productRepo.updateProductStock(productId, productToOrder.get().stock() - productIds.get(productId));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (productToOrder.isEmpty()) {
+                throw new IllegalStateException("Product mit der Id: " + productId + " konnte nicht bestellt werden!");
             }
+
+            if (productToOrder.get().stock() < productIds.get(productId)){
+                throw new NullPointerException("Nicht genug Vorrat für das Produkt mit der Id: " + productId);
+            }
+
+            productRepo.updateProductStock(productId, productToOrder.get().stock() - productIds.get(productId));
+
             products.put(productToOrder, productIds.get(productId));
         }
 

@@ -1,10 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,12 +26,20 @@ class ShopServiceTest {
         //GIVEN
         ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
 
-        //WHEN
-        Order actual = shopService.addOrder(Map.of("2", 1.0));
+        //THEN
+        assertThrows(IllegalStateException.class, () -> {
+            shopService.addOrder(Map.of("2", 1.0));
+        });
+    }
+
+    @Test
+    void addOrderTest_whenStockZero_thrownException() {
+        //GIVEN
+        ShopService shopService = new ShopService(new ProductRepo(), new OrderListRepo(), new IdService());
 
         //THEN
-        assertThrows(Exception.class, () -> {
-            throw new Exception("Product mit der Id: " + "2" + " konnte nicht bestellt werden!");
+        assertThrows(NullPointerException.class, () -> {
+            shopService.addOrder(Map.of("1", 11.0));
         });
     }
 
@@ -101,12 +106,10 @@ class ShopServiceTest {
         shopService.updateOrder(order7.id(), OrderStatus.COMPLETED);
 
         //WHEN
-        List<Order> actual = new ArrayList<>(shopService.getOldestOrderPerStatus().values());
+        List<Order> actual = List.of(shopService.getOldestOrderPerStatus().get(OrderStatus.COMPLETED), shopService.getOldestOrderPerStatus().get(OrderStatus.PROCESSING), shopService.getOldestOrderPerStatus().get(OrderStatus.IN_DELIVERY));
 
         //THEN
         List<Order> expected = List.of(order1.withOrderStatus(OrderStatus.COMPLETED), order2.withOrderStatus(OrderStatus.PROCESSING), order3.withOrderStatus(OrderStatus.IN_DELIVERY));
         assertEquals(expected, actual);
     }
-
-
 }
